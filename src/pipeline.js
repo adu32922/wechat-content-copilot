@@ -20,6 +20,8 @@ function safeInput(input) {
     audience: String(input.audience || ''),
     tone: String(input.tone || ''),
     notes: String(input.notes || ''),
+    brand: String(input.brand || '').slice(0, 2000),
+    materials: String(input.materials || '').slice(0, 6000),
     author: String(input.author || '').slice(0, 16),
     saveToWechat: input.saveToWechat === true,
   };

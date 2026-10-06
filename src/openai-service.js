@@ -13,6 +13,7 @@ const articleSchema = {
   type: 'object',
   properties: {
     title: { type: 'string' },
+    alternateTitles: { type: 'array', minItems: 3, maxItems: 5, items: { type: 'string' } },
     digest: { type: 'string' },
     lead: { type: 'string' },
     sections: {
@@ -32,8 +33,9 @@ const articleSchema = {
     conclusion: { type: 'string' },
     callToAction: { type: 'string' },
     coverPrompt: { type: 'string' },
+    layoutSuggestions: { type: 'array', minItems: 3, maxItems: 5, items: { type: 'string' } },
   },
-  required: ['title', 'digest', 'lead', 'sections', 'conclusion', 'callToAction', 'coverPrompt'],
+  required: ['title', 'alternateTitles', 'digest', 'lead', 'sections', 'conclusion', 'callToAction', 'coverPrompt', 'layoutSuggestions'],
   additionalProperties: false,
 };
 
@@ -51,6 +53,9 @@ function normalizeArticle(value) {
   }
   const article = {
     title: String(value.title || '').trim().slice(0, 64),
+    alternateTitles: Array.isArray(value.alternateTitles)
+      ? value.alternateTitles.map((title) => String(title || '').trim().slice(0, 64)).filter(Boolean).slice(0, 5)
+      : [],
     digest: String(value.digest || '').trim().slice(0, 120),
     lead: String(value.lead || '').trim(),
     sections: value.sections.map((section) => ({
@@ -62,12 +67,18 @@ function normalizeArticle(value) {
     conclusion: String(value.conclusion || '').trim(),
     callToAction: String(value.callToAction || '').trim(),
     coverPrompt: String(value.coverPrompt || '').trim(),
+    layoutSuggestions: Array.isArray(value.layoutSuggestions)
+      ? value.layoutSuggestions.map((item) => String(item || '').trim().slice(0, 160)).filter(Boolean).slice(0, 5)
+      : [],
   };
   if (!article.title || !article.digest || !article.lead || !article.conclusion || !article.callToAction || !article.coverPrompt) {
     throw new Error('文字模型返回的文章字段不完整');
   }
   if (article.sections.some((section) => !section.heading || section.paragraphs.length < 2)) {
     throw new Error('文章小标题或段落不完整');
+  }
+  if (article.alternateTitles.length < 3 || article.layoutSuggestions.length < 3) {
+    throw new Error('备选标题或排版建议不完整');
   }
   return article;
 }
@@ -78,8 +89,10 @@ function buildArticlePrompt(topic, options, retryNote = '') {
 目标读者：${options.audience || '普通读者'}
 语气：${options.tone || '专业、亲切、具体，不夸张'}
 补充要求：${options.notes || '无'}
+品牌设定：${options.brand || '未提供，请保持中性表达，不自行虚构品牌信息'}
+参考素材：${options.materials || '未提供。不得虚构数据、出处或案例'}
 
-要求：全文约 1500 个中文字符，必须控制在 ${ARTICLE_MIN_LENGTH}-${ARTICLE_MAX_LENGTH} 字；标题有吸引力但不标题党；开头快速进入读者场景；使用 3-5 个清晰小标题；观点具体，有例子和行动建议；不编造数据、案例、采访或来源；结尾自然引导收藏或留言。digest 不超过 120 个中文字符。coverPrompt 要描述一张无文字、无品牌标志、无水印的微信公众号横版封面，画面为主题服务并留有呼吸感。${retryNote}`;
+要求：全文约 1500 个中文字符，必须控制在 ${ARTICLE_MIN_LENGTH}-${ARTICLE_MAX_LENGTH} 字；主标题有吸引力但不标题党，并提供 3-5 个角度不同的 alternateTitles；开头快速进入读者场景；使用 3-5 个清晰小标题；观点具体，有例子和行动建议；只能使用参考素材中明确给出的事实，不编造数据、案例、采访或来源；结尾自然引导收藏或留言。digest 不超过 120 个中文字符。coverPrompt 要描述一张无文字、无品牌标志、无水印的微信公众号横版封面，画面为主题服务并留有呼吸感。layoutSuggestions 提供 3-5 条可执行的人工排版建议。${retryNote}`;
 }
 
 export async function generateArticleWithClient(openai, topic, options = {}, settings = {}) {

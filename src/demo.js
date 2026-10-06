@@ -14,6 +14,11 @@ export function createDemoArticle(topic, options = {}) {
   }
   return {
     title: `${topic}：真正有效的做法，藏在这 3 个细节里`,
+    alternateTitles: [
+      `围绕${topic}，先做对这三件事`,
+      `${topic}不是技巧问题，而是行动顺序问题`,
+      `一篇讲清${topic}的实用指南`,
+    ],
     digest: `从真实场景出发，拆解${topic}背后的关键判断与可执行方法。`,
     lead: `关于“${topic}”，信息很多，真正能落地的方法却不多。本文不制造焦虑，只用一套清楚的思路，帮你从理解走到行动。`,
     sections: [
@@ -24,5 +29,10 @@ export function createDemoArticle(topic, options = {}) {
     conclusion: `回到“${topic}”本身，最重要的不是一次做到完美，而是先完成一轮真实行动，再依据结果持续修正。清楚、克制、可重复，往往比看起来复杂的方法更有力量。`,
     callToAction: '如果这套方法对你有帮助，欢迎收藏，并把你的实际问题留在评论区。',
     coverPrompt: `微信公众号横版封面，主题为“${topic}”，现代编辑插画，清晰视觉焦点，温暖克制，留出标题区域，无水印。`,
+    layoutSuggestions: [
+      '导语使用浅色信息框，帮助读者快速进入场景。',
+      '每个小标题前后保留充足留白，正文段落不超过五行。',
+      '结尾行动建议使用强调色卡片，但避免过多颜色和装饰。',
+    ],
   };
 }

@@ -28,7 +28,9 @@
             <label>作者署名<input name="author" maxlength="16" placeholder="例如：阿杜"></label>
           </div>
           <label>文章语气<select name="tone"><option>专业、亲切、具体</option><option>故事感强、自然真诚</option><option>观点鲜明、简洁有力</option><option>实用教程、步骤清晰</option></select></label>
-          <label>补充要求<textarea name="notes" rows="2" placeholder="需要包含的观点、禁用词、品牌信息等"></textarea></label>
+          <label>品牌设定<textarea name="brand" rows="2" maxlength="2000" placeholder="品牌定位、常用称呼、表达风格、禁用词；不填则保持中性"></textarea></label>
+          <label>参考素材<textarea name="materials" rows="4" maxlength="6000" placeholder="粘贴可引用的事实、数据和要点；系统不会把未提供的信息当作事实"></textarea></label>
+          <label>补充要求<textarea name="notes" rows="2" placeholder="必须包含的观点、行动建议和其他约束"></textarea></label>
           <label class="check"><input type="checkbox" name="saveToWechat"><span>生成后存入公众号草稿箱</span></label>
           <button class="primary" type="submit">生成文章与封面 <span>→</span></button>
           <p class="hint">未勾选时仅生成本地预览，不会写入公众号。</p>
@@ -46,6 +48,10 @@
           <button id="retry-draft" class="secondary hidden" type="button">仅重试上传到草稿箱</button>
           <h1 id="article-title"></h1>
           <p id="digest" class="digest"></p>
+          <section id="editorial-notes" class="editorial-notes hidden">
+            <div><h3>备选标题</h3><ul id="alternate-titles"></ul></div>
+            <div><h3>排版建议</h3><ul id="layout-suggestions"></ul></div>
+          </section>
           <div id="article-body" class="article-body"></div>
         </article>
       </section>

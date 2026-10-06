@@ -12,7 +12,7 @@ Small Chinese-language content teams often move manually between topic queues, w
 
 ## Current evidence
 
-- A working local MVP exists with a browser UI, demo mode, structured generation, cover rendering, topic scheduling and optional WeChat draft creation.
+- A working local MVP exists with a browser UI, brand and source-material constraints, structured generation, alternate titles, layout guidance, cover rendering, topic scheduling and optional WeChat draft creation.
 - Automated tests cover generation constraints, failure handling, output rendering, queue transitions and the WeChat draft sequence.
 - The repository includes contributor, security, privacy, architecture and roadmap documentation plus continuous integration.
 - No claims are made about Stars, downloads, external users, adoption or production usage.

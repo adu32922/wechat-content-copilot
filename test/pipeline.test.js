@@ -24,6 +24,8 @@ test('演示模式端到端生成完整文件和 1536x656 封面', async () => {
   const result = await pipeline.runPipeline({ topic: '普通人如何提高工作效率', saveToWechat: true });
   assert.equal(result.status, 'cover_generated');
   assert.equal(result.publish.status, 'demo_skipped');
+  assert.equal(result.article.alternateTitles.length, 3);
+  assert.equal(result.article.layoutSuggestions.length, 3);
   for (const file of ['article.json', 'article.html', 'cover.jpg', 'result.json']) {
     await fs.access(path.join(result.outputDir, file));
   }

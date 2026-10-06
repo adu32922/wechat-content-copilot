@@ -45,6 +45,11 @@ function showResult(result) {
   if (result.coverUrl) cover.src = `${result.coverUrl}?v=${Date.now()}`;
   $('#article-title').textContent = result.title || result.topic || '生成未完成';
   $('#digest').textContent = result.digest || '';
+  const alternateTitles = result.article?.alternateTitles || [];
+  const layoutSuggestions = result.article?.layoutSuggestions || [];
+  $('#alternate-titles').innerHTML = alternateTitles.map((item) => `<li>${escapeHtml(item)}</li>`).join('');
+  $('#layout-suggestions').innerHTML = layoutSuggestions.map((item) => `<li>${escapeHtml(item)}</li>`).join('');
+  $('#editorial-notes').classList.toggle('hidden', !alternateTitles.length && !layoutSuggestions.length);
   $('#article-body').innerHTML = result.html || '';
   $('#length').textContent = result.articleLength ? `约 ${result.articleLength} 字` : '正文未完成';
   const states = {

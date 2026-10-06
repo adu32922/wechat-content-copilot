@@ -10,6 +10,7 @@ import { articleLength } from '../src/render.js';
 function makeArticle(paragraphSize, overrides = {}) {
   return {
     title: overrides.title || '一个可执行的公众号选题',
+    alternateTitles: ['备选标题一', '备选标题二', '备选标题三'],
     digest: overrides.digest || '这是一段清楚、克制的文章摘要。',
     lead: '先从读者真正遇到的问题开始。',
     sections: [1, 2, 3].map((index) => ({
@@ -19,6 +20,7 @@ function makeArticle(paragraphSize, overrides = {}) {
     conclusion: '把方法落实到一次真实行动，再根据结果持续调整。',
     callToAction: '欢迎收藏并分享你的实践。',
     coverPrompt: '简洁、有呼吸感的横版编辑插画',
+    layoutSuggestions: ['建议一', '建议二', '建议三'],
   };
 }
 
@@ -42,8 +44,28 @@ test('文章字数不合格时自动重写一次，并限制标题摘要长度',
   assert.match(calls[1].input, /上一稿实际为/);
   assert.equal(article.title.length, 64);
   assert.equal(article.digest.length, 120);
+  assert.equal(article.alternateTitles.length, 3);
   assert.ok(articleLength(article) >= 1300 && articleLength(article) <= 1700);
   assert.equal(calls[0].store, false);
+});
+
+test('品牌和参考素材进入提示词且不被模型选项替代', async () => {
+  let request;
+  const client = {
+    responses: {
+      create: async (value) => {
+        request = value;
+        return { output_text: JSON.stringify(makeArticle(220)) };
+      },
+    },
+  };
+  await generateArticleWithClient(client, '品牌内容测试', {
+    brand: '品牌语气克制，禁用词：第一',
+    materials: '内部调研仅确认三个常见问题，不提供百分比',
+  });
+  assert.match(request.input, /品牌语气克制/);
+  assert.match(request.input, /不提供百分比/);
+  assert.match(request.input, /不编造数据/);
 });
 
 test('两次字数都不合格时返回明确错误', async () => {
