@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>公众号自动创作台</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div><span class="brand-mark">W</span><span class="brand">公众号自动创作台</span></div>
+    <div id="status" class="status">正在检查配置…</div>
+  </header>
+  <main>
+    <section class="hero">
+      <p class="eyebrow">WECHAT CONTENT WORKFLOW</p>
+      <h1>一个选题，变成一篇<br><em>可审核的公众号草稿</em></h1>
+      <p class="hero-copy">约 1500 字正文、横版封面、本地归档和公众号草稿箱，一次完成。最终发布仍由你审核决定。</p>
+    </section>
+
+    <div class="workspace">
+      <section class="panel form-panel">
+        <div class="panel-title"><span>01</span><div><h2>创建内容</h2><p>先生成预览，满意后再进入草稿箱</p></div></div>
+        <form id="generate-form">
+          <label>本期选题 <b>*</b><textarea name="topic" rows="3" maxlength="120" placeholder="例如：为什么越来越多的小店开始重视私域运营？" required></textarea></label>
+          <div class="grid two">
+            <label>目标读者<input name="audience" placeholder="例如：本地餐饮店老板"></label>
+            <label>作者署名<input name="author" maxlength="16" placeholder="例如：阿杜"></label>
+          </div>
+          <label>文章语气<select name="tone"><option>专业、亲切、具体</option><option>故事感强、自然真诚</option><option>观点鲜明、简洁有力</option><option>实用教程、步骤清晰</option></select></label>
+          <label>补充要求<textarea name="notes" rows="2" placeholder="需要包含的观点、禁用词、品牌信息等"></textarea></label>
+          <label class="check"><input type="checkbox" name="saveToWechat"><span>生成后存入公众号草稿箱</span></label>
+          <button class="primary" type="submit">生成文章与封面 <span>→</span></button>
+          <p class="hint">未勾选时仅生成本地预览，不会写入公众号。</p>
+        </form>
+      </section>
+
+      <section class="panel preview-panel">
+        <div class="panel-title"><span>02</span><div><h2>内容预览</h2><p>生成结果会保存在本地 outputs 目录</p></div></div>
+        <div id="empty-preview" class="empty"><div class="empty-icon">✦</div><h3>等待一个好选题</h3><p>填写左侧信息后，文章和封面会在这里出现。</p></div>
+        <div id="loading" class="loading hidden"><div class="spinner"></div><h3>正在完成创作流程</h3><p>文章与封面生成通常需要一点时间，请不要关闭页面。</p></div>
+        <article id="result" class="result hidden">
+          <img id="cover" alt="文章封面">
+          <div class="result-meta"><span id="length"></span><span id="publish-state"></span></div>
+          <div id="result-error" class="result-error hidden"></div>
+          <button id="retry-draft" class="secondary hidden" type="button">仅重试上传到草稿箱</button>
+          <h1 id="article-title"></h1>
+          <p id="digest" class="digest"></p>
+          <div id="article-body" class="article-body"></div>
+        </article>
+      </section>
+    </div>
+
+    <section class="panel queue-panel">
+      <div class="panel-title"><span>03</span><div><h2>自动选题队列</h2><p>服务保持运行时，到点自动生成；默认尝试存入草稿箱</p></div></div>
+      <form id="queue-form" class="queue-form">
+        <input name="topic" maxlength="120" placeholder="输入未来选题" required>
+        <input name="scheduledAt" type="datetime-local" required>
+        <button type="submit">加入队列</button>
+      </form>
+      <div id="queue-list" class="queue-list"></div>
+    </section>
+  </main>
+  <div id="toast" class="toast hidden"></div>
+  <script src="/app.js" type="module"></script>
+</body>
+</html>

@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Security report / 安全报告
+    url: https://github.com/adu32922/wechat-content-copilot/security/advisories/new
+    about: 不要公开敏感漏洞

@@ -1,0 +1,12 @@
+node_modules/
+.env
+outputs/*
+!outputs/.gitkeep
+data/topics.json.tmp
+.DS_Store
+npm-debug.log*
+.env.*
+!.env.example
+coverage/
+.nyc_output/
+*.log

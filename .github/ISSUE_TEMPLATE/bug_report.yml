@@ -1,0 +1,45 @@
+name: Bug report / 缺陷报告
+description: 报告可复现的问题，请勿填写任何密钥或隐私数据
+title: "[Bug]: "
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: 请先删除日志中的 API Key、AppSecret、Token、账号和个人信息。
+  - type: textarea
+    id: description
+    attributes:
+      label: 问题描述
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: 复现步骤
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: 版本或 commit
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Node.js 与操作系统版本
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: 预期行为
+    validations:
+      required: true
+  - type: checkboxes
+    id: safety
+    attributes:
+      label: 安全确认
+      options:
+        - label: 我已移除密钥、Token、账号和个人信息
+          required: true
